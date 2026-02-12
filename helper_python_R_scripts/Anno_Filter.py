@@ -1,14 +1,6 @@
-def LoadAnnotation(anno_file):
-    '''Load the annotation file in .ppt format
-    to store each position with all its
-    info in a dictionary
+#CREDIT: https://gitlab.com/tbgenomicsunit/ThePipeline; Iñaki Comas's lab. 
 
-    This function is meant to load by default
-    the H37Rv annotation under
-    /data/ThePipeline/PipeModules/PipeScripts/H37Rv_annotation2sytems.ptt
-    '''
-    
-    #Note from TR: despite the above comment, this code only works for the .tab file currently used in the pipeline, not the .ptt file
+def LoadAnnotation(anno_file):
     annotation = {}
     with open(anno_file) as infile:
         # First skip lines until the header line that

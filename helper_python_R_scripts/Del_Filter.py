@@ -1,3 +1,5 @@
+#CREDIT: https://gitlab.com/tbgenomicsunit/ThePipeline; Iñaki Comas's lab. 
+
 def length_after_minus(input_string):
     # Split the string by the minus sign
     parts = input_string.split('-', 1)

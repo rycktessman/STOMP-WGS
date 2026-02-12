@@ -1,4 +1,4 @@
-
+#CREDIT: https://gitlab.com/tbgenomicsunit/ThePipeline; Iñaki Comas's lab. 
 
 def MeanCoverage(prefix, depth4cov):
     ''' Calculate the mean coverage per pb in a sample from
@@ -89,18 +89,6 @@ def CalcCoverage(args):
     reference = args.reference
     keepcoverage = args.keepcoverage
     depth4cov = args.depth4cov
-
-    #if not reference:
-        #reference = data["reference"]
-
-    #if args.extension == "bam":
-        # Calc coverage given a sort.bam
-        #CoverageBAM(prefix, reference)
-        # Create the .meancov file and get its values
-    #elif args.extension == "cram":
-        #CoverageCRAM(prefix, reference)
-    #else:
-        #assert False
 
     mean, median, cov = MeanSampleCoverage(prefix, keepcoverage, depth4cov)
 

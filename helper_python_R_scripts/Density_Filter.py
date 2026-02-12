@@ -1,3 +1,5 @@
+#CREDIT: https://gitlab.com/tbgenomicsunit/ThePipeline; Iñaki Comas's lab. 
+
 def ParseSNP(snp_fh, field, sep):
     '''GENERATOR: Parse snp_file and yield tuples of lines
     as strings and positions'''

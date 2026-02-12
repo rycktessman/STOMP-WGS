@@ -3,7 +3,6 @@
 library(dplyr)
 library(ggplot2)
 library(tidyr)
-#setwd("~/GitHub/STOMP_wgs/")
 
 pair.dist <- function(id1, id2, data.dir, ext.filtered, ext.unfiltered) {
   select_cols = c("Chrom", "Position", "Ref", "Cons", "VarAllele",
@@ -132,21 +131,6 @@ ids.pairs = expand.grid(ids.wSNPs, ids.wSNPs, stringsAsFactors = F) %>% as_tibbl
 ext.filtered <- ".fSNPs.annoF.delF.densF" #with annotations filtering, indel filtering, window-based filtering
 ext.unfiltered <- ".snp" #for rescue SNPs - without any filtering
 
-#server version
-if(FALSE) {
-  distances = parallel::mclapply(1:nrow(ids.pairs),
-                                 function(r) {
-                                   result = pair.dist(ids.pairs[r, 1], ids.pairs[r, 2], 
-                                                      data.dir = data.dir,
-                                                      ext.filtered = ext.filtered,
-                                                      ext.unfiltered = ext.unfiltered)
-                                   result
-                                 },
-                                 mc.cores = 40) 
-  distances_rbind = lapply(distances,"[[",1)
-  distances_rbind = do.call("rbind", distances_rbind)
-}
-
 #loop version
 distances_rbind <- data.frame()
 for(r in 1:nrow(ids.pairs)) {
@@ -206,40 +190,3 @@ write.csv(distances_rbind.diff.wlowreads, file = paste0(path_out, "pairs-dist-de
 write.csv(distances_rbind.diff.wlowreads.matrix, file = paste0(path_out, "distmatrix-densityfiltered_wrescueSNPs_wlowreads.csv"), quote = F, row.names = T)
 write.table(distances_rbind.diff.wlowreads, file = paste0(path_out, "pairs-dist-densityfiltered_wrescueSNPs_wlowreads.tsv"), quote = F, row.names = FALSE, sep="\t")
 write.table(distances_rbind.diff.wlowreads.matrix, file = paste0(path_out, "distmatrix-densityfiltered_wrescueSNPs_wlowreads.tsv"), quote = F, row.names = T, col.names=NA, sep="\t")
-
-
-pairs = list()
-pairs[[1]] = c("1A", "56124_S488_L005", "STP_56124A_S217_L004")
-pairs[[2]] = c("1A", "56124_S488_L005", "STP_56124B_S236_L004")
-pairs[[3]] = c("1A", "STP_56124A_S217_L004", "STP_56124B_S236_L004")
-pairs[[4]] = c("2A", "57875B_S485_L005", "57875A_S478_L005")
-pairs[[5]] = c("3A", "STP61302_S637_L006", "STP61313_S627_L006")
-pairs[[6]] = c("4A", "STP62336_S655_L006", "STP62359_S649_L006")
-pairs[[7]] = c("5A", "STP62440_S673_L006", "STP62498_S642_L006")
-pairs[[8]] = c("6A", "5872_S85", "STP_35872_S261_L004")
-pairs[[9]] = c("7A", "5241_S96", "STP_35241_S213_L004")
-pairs[[10]] = c("8A", "37316_S513_L005", "STP_37316_S222_L004")
-pairs[[11]] = c("1B", "60261_S595_L006", "STP60261-S29")
-pairs[[12]] = c("2B", "STP63747-S53", "STP63409_S658_L006")
-pairs[[13]] = c("3B", "STP62439_S665_L006", "STP62499-S51")
-pairs[[14]] = c("4B", "STP69976-S44", "STP70469-S31")
-pairs[[15]] = c("5B", "STP68461-S41", "STP68351-S46")
-pairs[[16]] = c("6B", "57875B_S485_L005", "STP57875-S4")
-pairs[[17]] = c("6B", "57875A_S478_L005", "STP57875-S4")
-pairs[[18]] = c("7B", "STP63533-S49", "STP63533_S660_L006")
-pairs[[19]] = c("1C", "STP61695-S11", "FT100020573_L01_STP_61695")
-pairs[[20]] = c("2C","STP_56121_S238_L004", "FT100020573_L01_STP_56121")
-pairs[[21]] = c("3C","STP_37679_S207_L004", "FT100020573_L01_STP_37679")
-pairs[[22]] = c("4C","STP62498_S642_L006", "FT100020573_L01_STP_62498")
-pairs[[23]] = c("5C","STP63114_S648_L006", "FT100020573_L01_STP_63114")
-pairs[[24]] = c("6C","4706_S101", "FT100020573_L01_STP_34706")
-
-for(i in 1:length(pairs)) {
-  temp = distances_rbind.diff.nrescued %>%
-    dplyr::filter(sample1 == pairs[[i]][2] & sample2 == pairs[[i]][3]) %>%
-    as.data.frame()
-  cat(pairs[[i]][1], "\t", temp[1, "sample1"], "\t", temp[1, "dist"], "\t", temp[1, "sample2"], "\n")
-}
-
-
-
